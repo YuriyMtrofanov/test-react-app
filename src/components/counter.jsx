@@ -12,7 +12,8 @@ export const Counter = (props) => {
   // В частности, св-во "counters.name" передает в дочерний элемент <span> компонента "Counter" значение {props.name} (см. return)
   // Т.е. в данном случае "props.name = counters.name";  также как  "props.value = counters.value"
   console.log(props)
-  let [value, satValue] = useState(props.value)
+  // let [value, satValue] = useState(props.value)
+  const { value } = props
 
   function formatCount(){
     return value === 0 ? "empty" : value
@@ -24,13 +25,13 @@ export const Counter = (props) => {
   }
 
   function handleIncrement(){
-    satValue((prevState) => prevState + 1)
-    console.log(value)
+    // satValue((prevState) => prevState + 1)
+    console.log('handleIncrement')
   }
 
   function handleDecrement(){
-    satValue((prevState) => prevState - 1)
-    console.log(value)
+    // satValue((prevState) => prevState - 1)
+    console.log('handleDecrement')
   }
 
     return (
