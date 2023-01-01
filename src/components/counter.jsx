@@ -1,94 +1,48 @@
 import React, {useState} from "react"
 import "bootstrap/dist/css/bootstrap.css"
-// import './App.css'
 
-export const Counter = () => {
-  // let count = 0
-  let [count, setCount] = useState(0)
-
-  const [tags, setTags] = useState(['tag1', 'tag2', 'tag3'])
+export const Counter = (props) => {
+  // "props" - это объект, в который мы передаем атрибуты создаваемого
+  // компонента. Так как при рендере <Counter /> мы задаем атрибут "value", 
+  // при этом в массиве исходных данных ("counters") я задаю значение параметра "value". 
+  // Т.о "props" - это объект с элементами, равными заданным при ренедринге атрибутами.
+  // Ну и в данном случае я могу, используя "props" задать начальное значение для значения
+  // задаваемой переменной.
+  // Также в props можем передавать информацию, на основе которой будут рендериться дочерние элементы данного компонента.
+  // В частности, св-во "counters.name" передает в дочерний элемент <span> компонента "Counter" значение {props.name} (см. return)
+  // Т.е. в данном случае "props.name = counters.name";  также как  "props.value = counters.value"
+  console.log(props)
+  // let [value, satValue] = useState(props.value)
+  const { value } = props
 
   function formatCount(){
-    return count === 0 ? "empty" : count
+    return value === 0 ? "empty" : value
   }
   const getBadgeClasses = () => {
     let classes = "badge m-2 "
-    classes += count === 0 ? "bg-warning" : "bg-primary"
+    classes += value === 0 ? "bg-warning" : "bg-primary"
     return classes
   }
-  /* Дефолтно к кнопке применяется класс 'badge bg-primary m-2', нужно при значении count = 0
-  применить класс 'badge bg-warning m-2' т.е. динамически поменять среднюю часть класса. 
-  Для этого создадим функцию getBadgeClasses(), которая использует тернарное выражение и 
-  динамичкски генерирует имя класса. Поэтому в теге span мы указываем не имя класса а вызываем ф-ю
-  { getBadgeClasses() }
-  */
 
   function handleIncrement(){
-    // count++
-    setCount((prevState) => prevState + 1)
-    console.log(count)
+    // satValue((prevState) => prevState + 1)
+    console.log('handleIncrement')
   }
 
   function handleDecrement(){
-    // count--
-    setCount((prevState) => prevState - 1)
-    console.log(count)
+    // satValue((prevState) => prevState - 1)
+    console.log('handleDecrement')
   }
 
-  function handleTagChange(id){
-    console.log(id)
-    setTags(prevState => prevState.filter((tag) => tag !== id)) 
-  }
-
-
-  function renderTags(){
-    /* 
-    Запись с классическим синтаксисом:
-
-    if (tags.length === 0){
-      return "No tags"}
-    else {
-      return tags.map(tag => {
-        return (
-          <li 
-              key = {tag} 
-              className = 'btn btn-primary btn-sm m-2' 
-              onClick = {() => handleTagChange(tag)}
-          >
-              {tag}
-          </li>
-      )})
-    }
-    */
-
-    // Запись с помощью тернарного выражения:
-    return tags.length !== 0 
-      && tags.map(tag => (
-            <li 
-                key = {tag} 
-                className = 'btn btn-primary btn-sm m-2' 
-                onClick = {() => handleTagChange(tag)}
-            >
-                {tag}
-            </li>
-        ))
-      // : "No tags"
-  }
-
-  if (tags.length !== 0) {
-    return <ul> {renderTags()} </ul>
-  } else {
     return (
-      <>
-        <ul>
-          { renderTags() }
-        </ul>
-
+      <div>
+        <span>{props.name}</span>
         <span className = { getBadgeClasses() }> { formatCount() } </span>
-        <button className = 'btn btn-primary btn-sm m-2' onClick = { handleIncrement }> + </button>
-        <button className = 'btn btn-primary btn-sm m-2' onClick = { handleDecrement }> - </button>
-      </>
+        <button className = 'btn btn-primary btn-sm m-1' onClick = { handleIncrement }> + </button>
+        <button className = 'btn btn-primary btn-sm m-1' onClick = { handleDecrement }> - </button>
+        <button className="btn btn-danger btn-sm m-2" onClick = {() => props.onDelete(props.id)}>Delete</button>
+      </div>
     )
   }
-  }
+
   
